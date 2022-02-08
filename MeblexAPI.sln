@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.32014.148
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Meblex", "Meblex\Meblex.csproj", "{953757F1-3EA4-45F2-B97F-AA3806F1D383}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MeblexData", "MeblexData\MeblexData.csproj", "{4D8D4EE4-6D33-4D61-8951-EAA0F6B0B995}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{953757F1-3EA4-45F2-B97F-AA3806F1D383}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{953757F1-3EA4-45F2-B97F-AA3806F1D383}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{953757F1-3EA4-45F2-B97F-AA3806F1D383}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{953757F1-3EA4-45F2-B97F-AA3806F1D383}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4D8D4EE4-6D33-4D61-8951-EAA0F6B0B995}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4D8D4EE4-6D33-4D61-8951-EAA0F6B0B995}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4D8D4EE4-6D33-4D61-8951-EAA0F6B0B995}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4D8D4EE4-6D33-4D61-8951-EAA0F6B0B995}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {DD885825-9FF5-4008-A700-BE4719896C82}
+	EndGlobalSection
+EndGlobal
