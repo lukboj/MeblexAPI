@@ -1,6 +1,4 @@
-using System;
-
-namespace Meblex.Models
+﻿namespace Meblex.ViewModels
 {
     public class ErrorViewModel
     {

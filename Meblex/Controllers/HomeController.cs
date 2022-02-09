@@ -1,4 +1,5 @@
-﻿using Meblex.Models;
+﻿using Meblex.ViewModels;
+using MeblexData.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
@@ -11,16 +12,20 @@ namespace Meblex.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
-
-        public HomeController(ILogger<HomeController> logger)
+        private readonly IProductRepository _productRepository;
+        public HomeController(IProductRepository productRepository)
         {
-            _logger = logger;
+            _productRepository = productRepository;
         }
 
-        public IActionResult Index()
+        public ViewResult Index()
         {
-            return View();
+            var homeviewmodel = new HomeViewModel
+            {
+                PrefferedProducts = _productRepository.PreferredProducts
+            };
+
+            return View(homeviewmodel);
         }
 
         public IActionResult Privacy()
@@ -28,10 +33,6 @@ namespace Meblex.Controllers
             return View();
         }
 
-        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error()
-        {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
-        }
+
     }
 }

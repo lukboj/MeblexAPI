@@ -1,0 +1,26 @@
+﻿   
+
+@using Microsoft.AspNetCore.Identity
+@using Microsoft.AspNetCore.Identity.EntityFrameworkCore
+
+@inject SignInManager<IdentityUser> SignInManager
+
+@if (SignInManager.IsSignedIn(User))
+                        {
+                            <li class="nav-item">
+                                <form method="post" asp-action="logout" asp-controller="account">
+                                    <button type="submit" class="nav-link btn btn-link py-0" style="width:auto">
+                                        Logout @User.Identity.Name
+                                    </button>
+                                </form>
+                            </li>
+                        }
+                        else
+                        {
+                            <li class="nav-item">
+                                <a asp-action="Register" asp-controller="Account" class="nav-link">Rejestracja</a>
+                            </li>
+                            <li class="nav-item">
+                                <a asp-action="Login" asp-controller="Account" class="nav-link">Zaloguj</a>
+                            </li>
+                        }

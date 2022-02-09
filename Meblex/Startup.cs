@@ -1,4 +1,4 @@
-using Microsoft.AspNetCore.Builder;
+﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.Extensions.Configuration;
@@ -8,6 +8,15 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
+using MeblexData.Interfaces;
+using MeblexData.Mocks;
+using MeblexData.Repositories;
+using MeblexData.Models;
+using Microsoft.AspNetCore.Identity;
+using MeblexData.Data;
+using MeblexData.Models.ShoppingCart;
+using Microsoft.AspNetCore.Http;
 
 namespace Meblex
 {
@@ -24,6 +33,23 @@ namespace Meblex
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
+            services.AddDbContext<MeblexData.Data.AppDbContext>(options =>
+                    options.UseSqlServer(Configuration.GetConnectionString("AppDbContext")));
+
+            services.AddIdentity<IdentityUser, IdentityRole>()
+                .AddEntityFrameworkStores<AppDbContext>();
+
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+            services.AddScoped(sp => ShoppingCart.GetCart(sp));
+            services.AddSession();
+            services.AddMemoryCache();
+            services.AddHttpContextAccessor();
+
+            services.AddTransient<ICategoryRepository, CategoryRepository>();
+            services.AddTransient<IProductRepository, ProductRepository>();
+            services.AddTransient<IOrderRepository, OrderRepository>();
+
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -41,16 +67,22 @@ namespace Meblex
             }
             app.UseHttpsRedirection();
             app.UseStaticFiles();
-
+            app.UseAuthentication();
             app.UseRouting();
-
             app.UseAuthorization();
+            app.UseSession();
 
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
+
+                endpoints.MapControllerRoute(
+                    name: "categoryFilter",
+                    pattern: "{controller=Product}/{action=List}/{category?}",
+                    defaults: new { Controller = "Product", action = "List" }
+                    );
             });
         }
     }

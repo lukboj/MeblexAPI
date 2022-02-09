@@ -1,0 +1,15 @@
+﻿@model ProductListViewModel
+
+<div>
+    <h2>@Model.CurrentCategory</h2>
+</div>
+
+<div class="row">
+@{
+    foreach (var product in Model.Products)
+    {
+        @Html.Partial("ProductSummary", product)
+    }
+} 
+
+</div>
