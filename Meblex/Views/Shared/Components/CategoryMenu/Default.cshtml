@@ -1,18 +1,21 @@
-﻿<li class="dropdown">
+﻿<li class="nav-item dropdown">
     <a asp-controller="Product"
        asp-action="Index"
-       class="dropdown-toggle" data-toggle="dropdown">Meble<b class="caret"></b></a>
-    <ul class="dropdown-menu">
+       class="nav-link dropdown-toggle" data-toggle="dropdown">Meble<b class="caret"></b></a>
+    <ul class="dropdown-menu dropdown-menu-dark">
         @foreach (var category in Model)
         {
             <li>
                 <a asp-controller="Product" asp-action="List"
-                   asp-route-category="@category.Name">@category.Name</a>
+                   asp-route-category="@category.Name" class="dropdown-item" >@category.Name</a>
             </li>
         }
         <li class="divider"></li>
         <li>
-            <a asp-controller="Product" asp-action="List" asp-route-category="">Wszystkie Meble</a>
+            <a class="dropdown-item" asp-controller="Product" asp-action="List" asp-route-category="" >Wszystkie Meble</a>
         </li>
     </ul>
 </li>
+
+
+           

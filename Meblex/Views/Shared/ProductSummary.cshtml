@@ -1,23 +1,29 @@
 ﻿@model Product
 
-<div class="col-md-4">
+<div class="col-md-4 border-dark ">
     <div class="thumbnail">
         <img src="@Model.ImageUrl" alt="" />
         <div class="caption">
-            <h3 class="pull-right">@Model.Price.ToString("c") </h3>
+            <h3 class="pull-right">
+                @Model.Name</h3>
             <h3>
-                <a>@Model.Name</a>
+                <a>@Model.Price.ToString("c")</a>
             </h3>
-            <p>@Model.Description</p>
         </div>
-        <div class="gext-right">
-            <a class="btn btn-alert-success id="cartButon"
-                    asp-controller="ShoppingCart"
+        <div>
+            <p class="button">
+                <a class="btn btn-dark text-right" asp-controller="ShoppingCart"
                     asp-action="AddToShoppingCart"
-                    asp-route-productId="@Model.ProductID">
-                Dodaj do koszyka
+                    asp-route-productId="@Model.ProductID">Zobacz Detale
 
                 </a>
+                <a class="btn btn-dark text-right" asp-controller="ShoppingCart"
+                    asp-action="AddToShoppingCart"
+                    asp-route-productId="@Model.ProductID">Dodaj do koszyka
+
+                </a>
+            </p>
+ 
         </div>
     </div>
 </div>
