@@ -21,7 +21,10 @@ namespace MeblexData.Repositories
 
         public IEnumerable<Product> PreferredProducts => _appDbContext.Products.Where(p => p.IsPreferred).Include(c => c.Category);
 
-        public Product GetProductById(int productid) => _appDbContext.Products.FirstOrDefault(a => a.ProductID == productid);
+        public Product GetProductById(int productid) => _appDbContext.Products.Find(productid);
+        public async Task<Product> GetProductByIdAsync(int? id) => await _appDbContext.Products.FindAsync(id);
+
+
 
     }
 }

@@ -1,14 +1,16 @@
 ﻿@model ProductListViewModel
+    <hr />
 
 <div>
-    <h2>@Model.CurrentCategory</h2>
+    <h2 align="center">@Model.CurrentCategory</h2>
 </div>
+    <hr />
 
 <div class="row">
 @{
     foreach (var product in Model.Products)
     {
-        @Html.Partial("ProductSummary", product)
+        @await Html.PartialAsync("ProductSummary", product)
     }
 } 
 

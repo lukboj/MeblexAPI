@@ -1,4 +1,5 @@
-﻿using Meblex.ViewModels;
+﻿using Meblex.ModelsDTO;
+using Meblex.ViewModels;
 using MeblexData.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -22,8 +23,20 @@ namespace Meblex.Controllers
         {
             var homeviewmodel = new HomeViewModel
             {
-                PrefferedProducts = _productRepository.PreferredProducts
+                PrefferedProducts = _productRepository.PreferredProducts.Select(item => new ProductDTO
+                {
+                    ProductID = item.ProductID,
+                    Name = item.Name,
+                    Price = item.Price,
+                    IsPreferred = item.IsPreferred,
+                    Category = item.Category,
+                    Description = item.Description,
+                    ImageUrl = item.ImageUrl,
+
+                }
+            )
             };
+        
 
             return View(homeviewmodel);
         }
@@ -31,6 +44,40 @@ namespace Meblex.Controllers
         public IActionResult Privacy()
         {
             return View();
+        }
+
+        public async Task<IActionResult> Details(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var product = await _productRepository.GetProductByIdAsync(id);
+
+            ProductDetailsDTO productDetailsDTO = new ProductDetailsDTO()
+            {
+                ProductID = product.ProductID,
+                Name = product.Name,
+                Price = product.Price,
+                Lenght = product.Lenght,
+                Width = product.Width,
+                Height = product.Height,
+                Weight = product.Weight,
+                Description = product.Description,
+                Material = product.Material,
+                Color = product.Color,
+                IsPreferred = product.IsPreferred,
+                ImageUrl = product.ImageUrl,
+                Category = product.Category,
+            };
+
+            if (productDetailsDTO == null)
+            {
+                return NotFound();
+            }
+
+            return View(productDetailsDTO);
         }
 
 

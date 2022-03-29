@@ -1,6 +1,7 @@
 ﻿using MeblexData.Data;
 using MeblexData.Interfaces;
 using MeblexData.Models;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,5 +19,7 @@ namespace MeblexData.Repositories
             _appDbContext = appDbContext;
         }
         public IEnumerable<Category> Categories => _appDbContext.Categories;
+
+
     }
 }

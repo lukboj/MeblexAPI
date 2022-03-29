@@ -1,10 +1,14 @@
 ﻿using MeblexData.Interfaces;
 using MeblexData.Models.Order;
 using MeblexData.Models.ShoppingCart;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Meblex.Controllers
 {
+    [Authorize]
     public class OrderController : Controller
     {
         private readonly IOrderRepository _orderRepository;
@@ -15,13 +19,15 @@ namespace Meblex.Controllers
             _orderRepository = orderRepository;
             _shoppingCart = shoppingCart;
         }
-
+        [Authorize]
         public IActionResult CheckOut()
         {
             return View();
         }
 
         [HttpPost]
+        [Authorize]
+
         public IActionResult CheckOut(Order order)
         {
             var items = _shoppingCart.GetShoppingCartItems();
@@ -45,6 +51,18 @@ namespace Meblex.Controllers
             ViewBag.CheckoutMessage = "Dziękujemy za zamówienie";
             return View();
         }
+            
+        public IActionResult YourOrders()
+        {
+            return View(_orderRepository.GetUserOrders());
+        }
+
+        public async Task<IActionResult> Details(int id)
+        {
+            return View(await _orderRepository.GetUserOrderByIdAsync(id));
+        }
+
+
 
     }
 }

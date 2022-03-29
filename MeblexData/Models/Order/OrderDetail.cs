@@ -11,11 +11,16 @@ namespace MeblexData.Models.Order
     {
         [Key]
         public int OrderDetailId { get; set; }
+        
         public int OrderId { get; set; }
         public int ProductId { get; set; }
+        [Display(Name = "Ilość")]
+
         public int Amount { get; set; }
+        [Display(Name = "Cena")]
 
         public decimal Price { get; set; }
+        [Display(Name ="Mebel")]
         public virtual Product Product { get; set; }
         public virtual Order Order { get; set; }
     }

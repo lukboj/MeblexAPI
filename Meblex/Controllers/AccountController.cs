@@ -1,4 +1,5 @@
 ﻿using Meblex.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
@@ -66,17 +67,20 @@ namespace Meblex.Controllers
                 var result = await _userManager.CreateAsync(user, loginViewModel.Password);
                 if (result.Succeeded)
                 {
-                    return RedirectToAction("index", "home");
+                    return RedirectToAction("LoggedIn", "Account");
                 }
             }
             return View(loginViewModel);
         }
         [HttpPost]
+        [Authorize]
         public async Task<IActionResult> Logout()
         {
             await _signInManager.SignOutAsync();
             return RedirectToAction("index", "home");
         }
+
+        public ViewResult LoggedIn() => View();
 
 
     }

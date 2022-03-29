@@ -1,0 +1,236 @@
+﻿@*@model IEnumerable<MeblexData.Models.Product>
+
+@{
+    ViewData["Title"] = "Products";
+}
+
+<h1 align="center" >Lista Mebli</h1>
+
+
+<a asp-action="CreateProduct" type="button" class="btn btn-secondary btn-lg btn-block">Dodaj nowy mebel</a>
+
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Price)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Lenght)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Width)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Height)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Weight)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Material)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Color)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IsPreferred)
+            </th>
+
+            <th>
+                Akcje
+
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Price)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Lenght)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Width)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Height)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Weight)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Material)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Color)
+                </td>
+                <td>
+                    @if (item.IsPreferred == true)
+                    {
+                        <a>Promowany</a>
+                    }
+                    else
+                    {
+                        <a>Niepromowany</a>
+
+                    }
+                </td>
+                <td>
+                    <div class="btn-group">
+                        <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Zarządzaj
+                        </button>
+                        <div class="dropdown-menu dropdown-menu-dark ">
+                            <li>
+                                <a class="dropdown-item" asp-action="EditProduct" asp-route-id="@item.ProductID">Edytuj</a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item" asp-action="DetailsProduct" asp-route-id="@item.ProductID">Detale</a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item" asp-action="DeleteProduct" asp-route-id="@item.ProductID">Usuń</a>
+                            </li>
+                            <li>
+                                @if (item.IsPreferred == true)
+                                {
+                                    <a class="dropdown-item" asp-action="ChangePreffering" asp-route-id="@item.ProductID">Nie Promuj</a>
+                                }
+                                else
+                                {
+                                    <a class="dropdown-item" asp-action="ChangePreffering" asp-route-id="@item.ProductID">Promuj</a>
+                                }
+
+                            </li>
+
+                        </div>
+
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<a asp-action="Index" type="button" class="btn btn-dark btn-lg btn-block">Powrót Do Menu</a>
+
+*@
+
+@model IEnumerable<Meblex.ModelsDTO.ProductDTO>
+
+@{
+    ViewData["Title"] = "Lista Mebli";
+}
+<hr />
+
+
+<h1 align="center" >Lista Mebli</h1>
+
+<hr />
+
+
+<a asp-action="CreateProduct" type="button" class="btn btn-secondary btn-lg btn-block">Dodaj nowy mebel</a>
+
+
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Price)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Description)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Category.Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IsPreferred)
+            </th>
+
+            <th>
+                Akcje
+
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Price)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Description)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Category.Name)
+                </td>
+@*                <td>
+                    @Html.DisplayFor(modelItem => item.IsPreferred)
+                </td>*@
+                <td>
+                    @if (item.IsPreferred == true)
+                    {
+                        <a>Promowany</a>
+                    }
+                    else
+                    {
+                        <a>Niepromowany</a>
+
+                    }
+                </td>
+                <td>
+                    <div class="btn-group">
+                        <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Zarządzaj
+                        </button>
+                        <div class="dropdown-menu dropdown-menu-dark ">
+                            <li>
+                                <a class="dropdown-item" asp-action="EditProduct" asp-route-id="@item.ProductID">Edytuj</a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item" asp-action="DetailsProduct" asp-route-id="@item.ProductID">Detale</a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item" asp-action="DeleteProduct" asp-route-id="@item.ProductID">Usuń</a>
+                            </li>
+                            <li>
+                                @if (item.IsPreferred == true)
+                                {
+                                    <a class="dropdown-item" asp-action="ChangePreffering" asp-route-id="@item.ProductID">Nie Promuj</a>
+                                }
+                                else
+                                {
+                                    <a class="dropdown-item" asp-action="ChangePreffering" asp-route-id="@item.ProductID">Promuj</a>
+                                }
+
+                            </li>
+
+                        </div>
+
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<a asp-action="Index" type="button" class="btn btn-dark btn-lg btn-block">Powrót Do Menu</a>
+

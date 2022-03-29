@@ -1,4 +1,4 @@
-﻿using MeblexData.Interfaces;
+﻿    using MeblexData.Interfaces;
 using MeblexData.Models;
 using System;
 using System.Collections.Generic;
@@ -103,6 +103,11 @@ namespace MeblexData.Mocks
         public IEnumerable<Product> PreferredProducts { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
 
         public Product GetProductById(int productid)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<Product> GetProductByIdAsync(int? productid)
         {
             throw new NotImplementedException();
         }

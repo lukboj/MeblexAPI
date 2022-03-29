@@ -1,20 +1,20 @@
-﻿using Meblex.ViewModels;
+﻿using Meblex.ModelsDTO;
+using Meblex.ViewModels;
 using MeblexData.Interfaces;
 using MeblexData.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace Meblex.Controllers
 {
     public class ProductController : Controller
     {
-        private readonly ICategoryRepository _categoryRepository;
         private readonly IProductRepository _productRepository;
 
-        public ProductController(ICategoryRepository categoryRepository, IProductRepository productRepository)
+        public ProductController(IProductRepository productRepository)
         {
-            _categoryRepository = categoryRepository;
             _productRepository = productRepository;
         }
 
@@ -22,14 +22,25 @@ namespace Meblex.Controllers
         public ViewResult List(string? category)
         {
             string _category = category;
-            IEnumerable<Product> products;
+            IEnumerable<ProductDTO> products;
 
             string currentcategory = string.Empty;
 
             if (string.IsNullOrEmpty(category))
             {
               
-                products = _productRepository.Products.OrderBy(p => p.ProductID);
+                 products = _productRepository.Products
+                    .OrderBy(p => p.ProductID)
+                    .Select(item => new ProductDTO
+                    {
+                        ProductID = item.ProductID,
+                        Price = item.Price,
+                        Category = item.Category,
+                        Description = item.Description,
+                        ImageUrl= item.ImageUrl,
+                        IsPreferred = item.IsPreferred,
+                        Name = item.Name,
+                    } );
                 currentcategory = "Wszystkie produkty";
 
                 var plvm = new ProductListViewModel
@@ -41,7 +52,19 @@ namespace Meblex.Controllers
                 return View(plvm);
             }
                 
-            products = _productRepository.Products.Where(p => p.Category.Name.Equals(category)).OrderBy(p => p.Name);
+            products = _productRepository.Products.Where(p => p.Category.Name.
+            Equals(category)).
+            OrderBy(p => p.Name).
+            Select(item => new ProductDTO
+            {
+                ProductID = item.ProductID,
+                Price = item.Price,
+                Category = item.Category,
+                Description = item.Description,
+                ImageUrl = item.ImageUrl,
+                IsPreferred = item.IsPreferred,
+                Name = item.Name,
+            }); ;
 
             var pvm = new ProductListViewModel
             {
@@ -57,6 +80,38 @@ namespace Meblex.Controllers
         public IActionResult Index()
         {
             return View();
+        }
+        public async Task<IActionResult> Details(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var product = await _productRepository.GetProductByIdAsync(id);
+
+            ProductDetailsDTO productDetailsDTO = new ProductDetailsDTO()
+            {
+                ProductID = product.ProductID,
+                Name = product.Name,
+                Price = product.Price,
+                Lenght = product.Lenght,
+                Width = product.Width,
+                Height = product.Height,
+                Weight = product.Weight,
+                Description = product.Description,
+                Material = product.Material,
+                Color = product.Color,
+                IsPreferred = product.IsPreferred,
+                ImageUrl = product.ImageUrl,
+                Category = product.Category,
+            };
+            if (productDetailsDTO == null)
+            {
+                return NotFound();
+            }
+
+            return View(productDetailsDTO);
         }
     }
 }

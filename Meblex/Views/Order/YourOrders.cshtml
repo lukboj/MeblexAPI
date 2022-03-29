@@ -1,0 +1,114 @@
+﻿@model IEnumerable<MeblexData.Models.Order.Order>
+
+@{
+    ViewData["Title"] = "YourOrders";
+}
+
+
+
+<h1 align="center">Lista Zamówień</h1>
+
+
+<table class="table table-hover">
+    <thead class="thead-dark">
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.FirstName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.LastName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Town)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.OrderTotal)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.OrderPlaced)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IsShipped)
+            </th>
+            <th>
+            </th>
+
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+            if(item.IsShipped == false)
+            {
+                <tr class="table-danger">
+            <td>
+                @Html.DisplayFor(modelItem => item.FirstName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.LastName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Town)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.OrderTotal)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.OrderPlaced)
+            </td>
+            <td>
+                @if(item.IsShipped == false)
+                {
+                        <td>Niezrealizowane</td>
+                    }  
+                    else
+                    {
+                        <td>Zrealizowane</td>
+                    }
+
+            </td>
+
+            <td>
+                <a asp-action="Details" asp-route-id="@item.OrderId">Details</a> 
+            </td>
+        </tr>
+            }
+            else
+            {
+                 <tr class="table-success">
+            <td>
+                @Html.DisplayFor(modelItem => item.FirstName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.LastName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Town)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.OrderTotal)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.OrderPlaced)
+            </td>
+            <td>
+                @if(item.IsShipped == false)
+                {
+                        <td>Niezrealizowane</td>
+                    }  
+                    else
+                    {
+                        <td>Zrealizowane</td>
+                    }
+
+            </td>
+
+            <td>
+                <a asp-action="Details" asp-route-id="@item.OrderId">Details</a> 
+            </td>
+        </tr>
+            }
+
+}
+    </tbody>
+</table>

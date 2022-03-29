@@ -36,8 +36,11 @@ namespace Meblex
             services.AddDbContext<MeblexData.Data.AppDbContext>(options =>
                     options.UseSqlServer(Configuration.GetConnectionString("AppDbContext")));
 
+            services.AddScoped<IAdminRepository, AdminRepository>();
+
             services.AddIdentity<IdentityUser, IdentityRole>()
                 .AddEntityFrameworkStores<AppDbContext>();
+
 
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddScoped(sp => ShoppingCart.GetCart(sp));
@@ -53,7 +56,11 @@ namespace Meblex
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app,
+            IWebHostEnvironment env,
+            UserManager<IdentityUser> userManager,
+            RoleManager<IdentityRole> roleManager,
+            AppDbContext appDbContext)
         {
             if (env.IsDevelopment())
             {
@@ -71,6 +78,8 @@ namespace Meblex
             app.UseRouting();
             app.UseAuthorization();
             app.UseSession();
+
+            DbInitializer.Seed(userManager, roleManager, appDbContext);
 
             app.UseEndpoints(endpoints =>
             {

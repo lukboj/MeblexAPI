@@ -1,11 +1,11 @@
-﻿using MeblexData.Models;
+﻿using Meblex.ModelsDTO;
 using System.Collections.Generic;
 
 namespace Meblex.ViewModels
 {
     public class ProductListViewModel
     {
-        public IEnumerable<Product> Products { get; set; }
+        public IEnumerable<ProductDTO> Products { get; set; }
         public string CurrentCategory { get; set; }
     }
 }

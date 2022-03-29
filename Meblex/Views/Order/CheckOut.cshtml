@@ -1,8 +1,10 @@
 ﻿@using MeblexData.Models.Order
 
 @model Order
- <h3 class="text-center">Ostatni krok do realizacji zamówienia</h3>
-<div>
+ <h3 align="Center" class="text-center">Ostatni krok do realizacji zamówienia</h3>
+<div align="Center">
+
+    <div asp-validation-summary="All"></div>
 
     <form asp-action="Checkout" method="post" class="form-horizontal" role="form">
         <div class="">

@@ -1,13 +1,20 @@
 ﻿@model HomeViewModel
+<hr />
 
+<h2 align="center">Polecane Meble</h2>
+<hr />
 
-<h2>Polecane Meble</h2>
-<h4>Wysoka jakość i przystępna cena</h4>
+@await Html.PartialAsync("Carousel")
+
+<hr />
+<h4 align="center">Wysoka jakość i przystępna cena</h4>
+<hr />
+
 
 <div class="row">
     @foreach (var mebel in Model.PrefferedProducts)
     {
-        @Html.Partial("ProductSummary", mebel)
-    }       
+        @await Html.PartialAsync("ProductSummary", mebel)
+    }
 
 </div>

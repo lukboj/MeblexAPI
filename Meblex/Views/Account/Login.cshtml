@@ -1,10 +1,10 @@
 ﻿@model LoginViewModel
 
-<div class="row loginForm">
-    <div class="col-md-8 col-md-offset-2">
-                <h2>Zaloguj </h2>
+<div align="center" class="row loginForm">
+    <div class="col-md-12 col-md-offset-2">
+                <h2>Zaloguj</h2>
 
-\        <form asp-controller="Account" asp-action="Login" method="post" class="form-horizontal" role="form">
+        <form asp-controller="Account" asp-action="Login" method="post" class="form-horizontal" role="form">
             <h4>Wprowadź swoje dane tutaj</h4>
             <hr />
             <input type="hidden" asp-for="ReturnUrl" />

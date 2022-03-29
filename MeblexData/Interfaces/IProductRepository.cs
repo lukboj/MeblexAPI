@@ -12,5 +12,7 @@ namespace MeblexData.Interfaces
         IEnumerable<Product> Products { get;  }
         IEnumerable<Product> PreferredProducts { get; }
         Product GetProductById(int productid);
+
+        public Task<Product> GetProductByIdAsync(int? productid);
     }
 }

@@ -26,5 +26,6 @@ namespace MeblexData.Data
         public DbSet<ApplicationUser> AplicationUsers { get; set; }
 
 
+
     }
 }

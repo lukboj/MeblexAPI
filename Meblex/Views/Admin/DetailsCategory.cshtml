@@ -1,0 +1,57 @@
+﻿@model Meblex.ModelsDTO.CategoryDetailsDTO
+<hr />
+
+<h1 align="center">Dane</h1>
+
+<hr />
+
+<dl align="center">
+        <dt align="center class = "col-sm-2">
+          @Html.DisplayNameFor(model => model.Name)
+        </dt>
+        <dd align="center  class = "col-sm-10">
+             @Html.DisplayFor(model => model.Name)
+        </dd>
+        <dt align="center class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Description)
+        </dt>
+        <dd align="center class = "col-sm-10">
+             @Html.DisplayFor(model => model.Description)
+        </dd>
+       
+</dl>
+<hr />
+
+
+<h1 align="center">Lista Mebli w tej Kategorii</h1>
+<hr />
+
+<table class="table table-striped table-dark" />
+
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Nazwa mebla</th>
+            <th>Ilość</th>
+            <th>Cena</th>
+            <th>Kolor</th>
+
+        </tr>
+    </thead>
+    <tbody>
+        @foreach(var item in Model.products)
+        {
+            <tr>
+                <td>@Html.DisplayFor(model => item.ProductID)</td>
+                <td>@Html.DisplayFor(model => item.Name)</td>
+                <td>@Html.DisplayFor(model => item.Color)</td>
+                <td>@Html.DisplayFor(model => item.Price)</td>
+                <td>@Html.DisplayFor(model => item.Material)</td>
+
+            </tr>
+        }
+    </tbody>
+
+
+<a asp-action="Categories" type="button" class="btn btn-secondary btn-lg btn-block">Powrót Do listy Kategorii</a>
+<hr />

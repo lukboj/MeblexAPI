@@ -1,7 +1,7 @@
-﻿@model Product
+﻿@model Meblex.ModelsDTO.ProductDTO
 
-<div class="col-md-4 border-dark ">
-    <div class="thumbnail">
+<div align="center" class="col-md-6 col-12 col-sm-12 col-lg-6 border-dark ">
+    <div class="border">
         <img src="@Model.ImageUrl" alt="" />
         <div class="caption">
             <h3 class="pull-right">
@@ -12,9 +12,10 @@
         </div>
         <div>
             <p class="button">
-                <a class="btn btn-dark text-right" asp-controller="ShoppingCart"
-                    asp-action="AddToShoppingCart"
-                    asp-route-productId="@Model.ProductID">Zobacz Detale
+                <a class="btn btn-dark text-right" 
+                    asp-controller="Home"
+                    asp-action="Details"
+                    asp-route-Id="@Model.ProductID">Zobacz Detale
 
                 </a>
                 <a class="btn btn-dark text-right" asp-controller="ShoppingCart"

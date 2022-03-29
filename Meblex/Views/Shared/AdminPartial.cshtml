@@ -1,0 +1,10 @@
+﻿
+@using Microsoft.AspNetCore.Identity
+@using Microsoft.AspNetCore.Identity.EntityFrameworkCore
+
+@inject RoleManager<IdentityRole> roleManager
+
+    @if (User.IsInRole("Administrator"))
+{
+    <a ></a>
+}

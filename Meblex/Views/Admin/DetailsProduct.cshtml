@@ -1,0 +1,92 @@
+﻿@model Meblex.ModelsDTO.ProductDetailsDTO
+
+@{
+    ViewData["Title"] = "Detale Mebli";
+}
+<hr />
+
+
+<h1 align="center" >@Html.DisplayFor(model => model.Name)</h1>
+<hr />
+<div align="center">
+     <img src="@Model.ImageUrl" alt="" />
+</div>
+
+<hr />
+
+<h1 align="center">Dane</h1>
+
+<dl align="center">
+        <dt align="center class = "col-sm-2" >
+          @Html.DisplayNameFor(model => model.Name)
+        </dt>
+        <dd align="center  class = "col-sm-10">
+             @Html.DisplayFor(model => model.Name)
+        </dd>
+        <dt align="center class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Description)
+        </dt>
+        <dd align="center class = "col-sm-10">
+             @Html.DisplayFor(model => model.Description)
+        </dd>
+         <dt align="center class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Price)
+        </dt>
+        <dd align="center class = "col-sm-10">
+             @Html.DisplayFor(model => model.Price)
+        </dd>
+       
+</dl>
+    <hr />  
+
+<h1 align="center">Dane Techniczne</h1>
+    <dl align="center">
+        
+        <dt align="center class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Lenght)
+        </dt>
+        <dd align="center class = "col-sm-10">
+            @Html.DisplayFor(model => model.Lenght)
+        </dd>
+        <dt  align="center class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Width)
+        </dt>
+        <dd align="center class = "col-sm-10">
+            @Html.DisplayFor(model => model.Width)
+        </dd>
+        <dt align="center class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Height)
+        </dt>
+        <dd align="center class = "col-sm-10">
+            @Html.DisplayFor(model => model.Height)
+        </dd>
+        <dt align="center class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Weight)
+        </dt>
+        <dd align="center class = "col-sm-10">
+            @Html.DisplayFor(model => model.Weight)
+        </dd>
+        <dt align="center class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Description)
+        </dt>
+        <dd align="center class = "col-sm-10">
+            @Html.DisplayFor(model => model.Description)
+        </dd>
+        <dt align="center class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Material)
+        </dt>
+        <dd align="center class = "col-sm-10">
+            @Html.DisplayFor(model => model.Material)
+        </dd>
+        <dt align="center class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Color)
+        </dt>
+        <dd align="center class = "col-sm-10">
+            @Html.DisplayFor(model => model.Color)
+        </dd>
+
+    </dl>
+<hr />
+<div><
+        <a asp-action="Products" type="button" class="btn btn-dark btn-lg btn-block" >Powrot do Listy</a>  
+</div>
