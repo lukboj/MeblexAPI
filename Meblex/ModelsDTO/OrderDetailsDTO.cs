@@ -40,6 +40,7 @@ namespace Meblex.ModelsDTO
 
         public bool IsShipped { get; set; } = false;
         public List<OrderListDTO> OrderDetails { get; set; }
+
         public virtual ApplicationUser User { get; set; }
     }
 }

@@ -23,7 +23,7 @@ namespace Meblex.Controllers
         private readonly IAdminService adminService;
 
 
-        public AdminController(IAdminRepository adminRepository, IAdminService _adminService)
+        public AdminController(IAdminService _adminService)
         {
 
             adminService = _adminService;
@@ -357,9 +357,10 @@ namespace Meblex.Controllers
             return View(category);
         }
 
-        public async Task<IActionResult> ConfirmShipping(int id)
+        public async Task<RedirectToActionResult> ConfirmShipping(int id)
         {
-            return Ok( await adminService.OrderDone(id));
+            await adminService.OrderDone(id);
+            return RedirectToAction("Index");
         }
 
         public async Task<IActionResult> ChangePreffering(int id)

@@ -24,6 +24,6 @@ namespace Meblex.ModelsDTO
         public string ImageUrl { get; set; }
         [Display(Name = "Kategoria")]
 
-        public virtual Category Category { get; set; }
+        public virtual CategoryDTO Category { get; set; }
     }
 }

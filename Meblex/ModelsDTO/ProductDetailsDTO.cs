@@ -44,6 +44,6 @@ namespace Meblex.ModelsDTO
         [Display(Name = "Kategoria")]
 
         public int CategoryID { get; set; }
-        public virtual Category Category { get; set; }
+        public virtual CategoryDTO Category { get; set; }
     }
 }
