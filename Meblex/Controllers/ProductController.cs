@@ -1,4 +1,5 @@
 ﻿using Meblex.ModelsDTO;
+using Meblex.Services.Interfaces;
 using Meblex.ViewModels;
 using MeblexData.Interfaces;
 using MeblexData.Models;
@@ -12,10 +13,12 @@ namespace Meblex.Controllers
     public class ProductController : Controller
     {
         private readonly IProductRepository _productRepository;
+        private readonly IProductService productService;
 
-        public ProductController(IProductRepository productRepository)
+        public ProductController(IProductRepository productRepository, IProductService _productService)
         {
             _productRepository = productRepository;
+            productService = _productService;
         }
 
 
@@ -88,30 +91,30 @@ namespace Meblex.Controllers
                 return NotFound();
             }
 
-            var product = await _productRepository.GetProductByIdAsync(id);
+            var product = await productService.GetProductById(id); 
 
-            ProductDetailsDTO productDetailsDTO = new ProductDetailsDTO()
-            {
-                ProductID = product.ProductID,
-                Name = product.Name,
-                Price = product.Price,
-                Lenght = product.Lenght,
-                Width = product.Width,
-                Height = product.Height,
-                Weight = product.Weight,
-                Description = product.Description,
-                Material = product.Material,
-                Color = product.Color,
-                IsPreferred = product.IsPreferred,
-                ImageUrl = product.ImageUrl,
-                Category = product.Category,
-            };
-            if (productDetailsDTO == null)
+            //ProductDetailsDTO productDetailsDTO = new ProductDetailsDTO()
+            //{
+            //    ProductID = product.ProductID,
+            //    Name = product.Name,
+            //    Price = product.Price,
+            //    Lenght = product.Lenght,
+            //    Width = product.Width,
+            //    Height = product.Height,
+            //    Weight = product.Weight,
+            //    Description = product.Description,
+            //    Material = product.Material,
+            //    Color = product.Color,
+            //    IsPreferred = product.IsPreferred,
+            //    ImageUrl = product.ImageUrl,
+            //    Category = product.Category,
+            //}/*;*/
+            if (product == null)
             {
                 return NotFound();
             }
 
-            return View(productDetailsDTO);
+            return View(product);
         }
     }
 }

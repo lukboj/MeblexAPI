@@ -11,6 +11,7 @@ using MeblexData.Interfaces;
 using MeblexData.Models;
 using Microsoft.AspNetCore.Authorization;
 using Meblex.ModelsDTO;
+using Meblex.Services.Interfaces;
 
 namespace Meblex.Controllers
 {
@@ -18,61 +19,30 @@ namespace Meblex.Controllers
     public class AdminController : Controller
     {
 
-        private readonly IAdminRepository _adminRepository;
 
-        public AdminController( IAdminRepository adminRepository)
+        private readonly IAdminService adminService;
+
+
+        public AdminController(IAdminRepository adminRepository, IAdminService _adminService)
         {
 
-            _adminRepository = adminRepository;
+            adminService = _adminService;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            ViewBag.Statistics =  _adminRepository.GetStatistics();
-
-            var order = _adminRepository.orders.Select(item => new OrderDTO
-            {
-                OrderId = item.OrderId,
-                PhoneNumber = item.PhoneNumber,
-                OrderPlaced = item.OrderPlaced,
-                IsShipped = item.IsShipped,
-                LastName = item.LastName,
-                OrderTotal = item.OrderTotal
-            }
-            );
-            return View(order);
+            ViewBag.Statistics = await adminService.GetStatistics(); 
+            return View(await adminService.GetAllOrders());
         }
 
-        public  IActionResult Products()
+        public async Task<ActionResult> Products()
         {
-            var products = _adminRepository.products
-                .Select(item => new ProductDTO
-            {
-                ProductID = item.ProductID,
-                Name = item.Name,
-                Price = item.Price,
-                IsPreferred = item.IsPreferred,
-                Category = item.Category,
-                Description = item.Description,
-                ImageUrl = item.ImageUrl,
-
-            }
-            );
-               
-                            
-            return View(products);
+            return View(await adminService.GetAllProducts());
         }
 
-        public  IActionResult Categories()
+        public async Task<IActionResult> Categories()
         {
-            var categories = _adminRepository.Categories.Select(item => new CategoryDTO
-            {
-                CategoryId = item.CategoryId,
-                Description = item.Description,
-                Name = item.Description,
-            });
-
-            return View(categories);
+            return View(await adminService.GetAllCategories());
         }
 
         [HttpGet, ActionName("DetailsOrder")]
@@ -85,7 +55,8 @@ namespace Meblex.Controllers
                 return NotFound();
             }
 
-            var order = await _adminRepository.GetOrderDetails(id);
+            var order = await adminService.GetOrderById(id);
+
             if (order == null)
             {
                 return NotFound();
@@ -103,22 +74,15 @@ namespace Meblex.Controllers
                 return NotFound();
             }
 
-            var category = await _adminRepository.GetCategoryDetailsAsync(id);
-            CategoryDetailsDTO categoryDetailsDTO = new CategoryDetailsDTO()
-            {
-                CategoryId = category.CategoryId,
-                Description = category.Description,
-                Name = category.Name,
-                products = category.Products,
+            var category = await adminService.GetCategoryById(id);
+            
 
-            };
-
-            if (categoryDetailsDTO == null)
+            if (category == null)
             {
                 return NotFound();
             }
 
-            return View(categoryDetailsDTO);
+            return View(category);
         }
 
         [HttpGet, ActionName("DetailsProduct")]
@@ -130,31 +94,14 @@ namespace Meblex.Controllers
                 return NotFound();
             }
 
-            var product= await _adminRepository.GetProductByIdAsync(id);
+            var product = await adminService.GetProductById(id);
 
-            ProductDetailsDTO productDetailsDTO = new ProductDetailsDTO()
-            {
-                ProductID = product.ProductID,
-                Name = product.Name,
-                Price = product.Price,
-                Lenght = product.Lenght,
-                Width = product.Width,
-                Height = product.Height,
-                Weight = product.Weight,
-                Description = product.Description,
-                Material = product.Material,
-                Color = product.Color,
-                IsPreferred = product.IsPreferred,
-                ImageUrl = product.ImageUrl,
-                Category = product.Category,
-            };
-
-            if (productDetailsDTO == null)
+            if (product == null)
             {
                 return NotFound();
-            }
+            }     
 
-            return View(productDetailsDTO);
+            return View(product);
         }
 
         // GET: Admin/Delete/5
@@ -168,7 +115,7 @@ namespace Meblex.Controllers
                 return NotFound();
             }
 
-            Order order = await  _adminRepository.GetOrderByIdAsync(id);
+            var order = await adminService.GetOrderById(id);
 
             if (order == null)
             {
@@ -187,7 +134,7 @@ namespace Meblex.Controllers
                 return NotFound();
             }
 
-            Product product = await _adminRepository.GetProductByIdAsync(id);
+            var product = await adminService.GetProductById(id);
 
             if (product == null)
             {
@@ -205,7 +152,7 @@ namespace Meblex.Controllers
                 return NotFound();
             }
 
-            Category category = await _adminRepository.GetCategoryDetailsAsync(id);
+            var category = await adminService.GetCategoryById(id);
 
             if (category == null)
             {
@@ -220,7 +167,7 @@ namespace Meblex.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteCategoryConfirmed(int id)
         {
-            await _adminRepository.DeleteCategoryAsync(id);
+            await adminService.DeleteCategory(id);
             return RedirectToAction(nameof(Categories));
         }
 
@@ -230,7 +177,7 @@ namespace Meblex.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteOrderConfirmed(int id)
         {
-            await _adminRepository.DeleteOrder(id);
+            await adminService.DeleteOrder(id);
             return RedirectToAction(nameof(Index));
         }
 
@@ -240,7 +187,7 @@ namespace Meblex.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteProductConfirmed(int id)
         {
-            await _adminRepository.DeleteProduct(id);
+            await adminService.DeleteProduct(id);
             return RedirectToAction(nameof(Products));
         }
 
@@ -252,9 +199,10 @@ namespace Meblex.Controllers
         }
 
         [Route("Admin/Product/Create")]
-        public  IActionResult CreateProduct()
+        public  async Task<IActionResult> CreateProduct()
         {
-            ViewData["CategoryID"] = new SelectList(_adminRepository.Categories, "CategoryId", "Name");
+            var Categories = await adminService.GetAllCategories();
+            ViewData["CategoryID"] = new SelectList(Categories, "CategoryId", "Name");
             return View();
         }
 
@@ -262,15 +210,15 @@ namespace Meblex.Controllers
         [ValidateAntiForgeryToken]
         [Route("Admin/Product/Create")]
 
-        public async Task<IActionResult> CreateProduct([Bind("ProductID,Name,Price,Lenght,Width,Height,Weight,Description,Material,Color,IsPreferred,ImageUrl,ImageThumbnail,CategoryID")] Product product)
+        public async Task<IActionResult> CreateProduct([Bind("ProductID,Name,Price,Lenght,Width,Height,Weight,Description,Material,Color,IsPreferred,ImageUrl,ImageThumbnail,CategoryID")] ProductDetailsDTO product)
         {
            
             try
             {
                 if (ModelState.IsValid)
                 {
-                    await _adminRepository.AddProduct(product);
-                    return RedirectToAction(nameof(Categories));
+                    await adminService.createnewproduct(product);
+                    return RedirectToAction(nameof(Products));
                 }
             }
             catch (DbUpdateException)
@@ -286,14 +234,14 @@ namespace Meblex.Controllers
         [ValidateAntiForgeryToken]
         [Route("Admin/Categories/Create")]
 
-        public async Task<IActionResult> CreateCategory([Bind("CategoryId,Name,Description")] Category category)
+        public async Task<IActionResult> CreateCategory([Bind("CategoryId,Name,Description")] CategoryDetailsDTO category)
         {
 
             try
             {
                 if (ModelState.IsValid)
                 {
-                    await _adminRepository.AddCategoryAsync(category);
+                    await adminService.CreateNewCategory(category);
                     return RedirectToAction(nameof(Categories));
                 }
             }
@@ -313,14 +261,16 @@ namespace Meblex.Controllers
                 return NotFound();
             }
 
-            var product = await _adminRepository.GetProductByIdAsync(id);
+            var product = await adminService.GetProductById(id);
 
             if (product == null)
             {
                 return NotFound();
             }
 
-            ViewData["CategoryID"] = new SelectList(_adminRepository.Categories, "CategoryId", "Name", product.CategoryID);
+            var categories = await adminService.GetAllCategories();
+
+            ViewData["CategoryID"] = new SelectList(categories, "CategoryId", "Name", product.CategoryID);
 
             return View(product);
         }
@@ -334,7 +284,7 @@ namespace Meblex.Controllers
                 return NotFound();
             }
 
-            var category = await _adminRepository.GetCategoryByIdAsync(id);
+            var category = await adminService.GetCategoryById(id);
 
             if (category == null)
             {
@@ -346,7 +296,7 @@ namespace Meblex.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> EditProduct(int id, [Bind("ProductID,Name,Price,Lenght,Width,Height,Weight,Description,Material,Color,IsPreferred,ImageUrl,ImageThumbnail,CategoryID")] Product product)
+        public async Task<IActionResult> EditProduct(int id, [Bind("ProductID,Name,Price,Lenght,Width,Height,Weight,Description,Material,Color,IsPreferred,ImageUrl,ImageThumbnail,CategoryID")] ProductDetailsDTO product)
         {
             if (id != product.ProductID)
             {
@@ -357,11 +307,11 @@ namespace Meblex.Controllers
             {
                 try
                 {
-                    await _adminRepository.UpdateProduct(product);
+                    await adminService.UpdateProduct(id, product);
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (_adminRepository.ProductExist(product.ProductID).Equals(false))
+                    if (adminService.ProductExist(product.ProductID).Equals(false))
                     {
                         return NotFound();
                     }
@@ -378,7 +328,7 @@ namespace Meblex.Controllers
         [HttpPost, ActionName("EditCategory")]
         [Route("Admin/Category/Edit/{id}")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> EditCategory(int id, [Bind("CategoryId,Name,Description")] Category category)
+        public async Task<IActionResult> EditCategory(int id, [Bind("CategoryId,Name,Description")] CategoryDetailsDTO category)
         {
             if (id != category.CategoryId)
             {
@@ -389,11 +339,11 @@ namespace Meblex.Controllers
             {
                 try
                 {
-                    await _adminRepository.UpdateCategory(category);
+                    await adminService.UpdateCategory(id,category);
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (_adminRepository.CategoryExist(category.CategoryId).Equals(false))
+                    if (adminService.CategoryExist(category.CategoryId).Equals(false))
                     {
                         return NotFound();
                     }
@@ -409,12 +359,12 @@ namespace Meblex.Controllers
 
         public async Task<IActionResult> ConfirmShipping(int id)
         {
-            return Ok( await _adminRepository.IsShipped(id));
+            return Ok( await adminService.OrderDone(id));
         }
 
         public async Task<IActionResult> ChangePreffering(int id)
         {
-            await _adminRepository.PrefferProduct(id);
+            await adminService.ChangePreffer(id);
             return RedirectToAction(nameof(Products));
 
         }

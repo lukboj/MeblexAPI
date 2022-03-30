@@ -27,12 +27,20 @@ namespace MeblexData.Repositories
 
         public IEnumerable<Category> Categories => _appDbContext.Categories;
 
-        public async Task<Category> AddCategoryAsync(Category category)
+        public async Task<bool> AddCategoryAsync(Category category)
         {
 
-            _appDbContext.Categories.Add(category);
-            await _appDbContext.SaveChangesAsync();
-            return (category);
+            try
+            {
+                _appDbContext.Categories.Add(category);
+                await _appDbContext.SaveChangesAsync();
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+
         }
 
         public async Task<Product> AddProduct(Product product)
@@ -49,10 +57,10 @@ namespace MeblexData.Repositories
             await _appDbContext.SaveChangesAsync();
         }
 
-        public async Task DeleteProduct(int? id)
+        public async Task DeleteProduct(Product product)
         {
-            var order = await _appDbContext.Products.FindAsync(id);
-            _appDbContext.Products.Remove(order);
+            //var order = await _appDbContext.Products.FindAsync(id);
+            _appDbContext.Products.Remove(product);
             await _appDbContext.SaveChangesAsync();
         }
 
@@ -118,22 +126,34 @@ namespace MeblexData.Repositories
             return obj;
         }
 
-        public async Task<Order> IsShipped(int id)
+        public async Task<bool> IsShipped(int id)
         {
             Order order = await _appDbContext.Orders.FirstOrDefaultAsync(a => a.OrderId == id);
             if (order is null)
             {
-                return order;
+                return false;
             }
             if (order.IsShipped == true)
             {
-                return order;
+                return false;
             }
-            order.IsShipped = true;
-            _appDbContext.Update(order);
-            await _appDbContext.SaveChangesAsync();
+            try
+            {
+                order.IsShipped = true;
+                _appDbContext.Update(order);
+                await _appDbContext.SaveChangesAsync();
 
-            return order;
+                return true;
+
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+           
+
+            return false;
 
         }
 
@@ -181,15 +201,15 @@ namespace MeblexData.Repositories
 
         }
 
-        public  Statistics GetStatistics()
+        public async Task<Statistics> GetStatistics()
         {
             Statistics statistics = new Statistics
             {
-                AmountOfMoneyEarned =  _appDbContext.Orders.Sum(a => a.OrderTotal),
-                AmountOfNotShippedOrders =  _appDbContext.Orders.Count(a => a.IsShipped == false),
-                AmountOfOrders =  _appDbContext.Orders.Count(),
-                AmountOfShippedOrders =   _appDbContext.Orders.Count(a => a.IsShipped == true),
-                AmountOfSoldMebels =  _appDbContext.OrdersDetails.Sum(a => a.Amount)
+                AmountOfMoneyEarned =  await _appDbContext.Orders.SumAsync(a => a.OrderTotal),
+                AmountOfNotShippedOrders = await _appDbContext.Orders.CountAsync(a => a.IsShipped == false),
+                AmountOfOrders = await _appDbContext.Orders.CountAsync(),
+                AmountOfShippedOrders = await _appDbContext.Orders.CountAsync(a => a.IsShipped == true),
+                AmountOfSoldMebels = await _appDbContext.OrdersDetails.SumAsync(a => a.Amount)
             };
 
             return (statistics);

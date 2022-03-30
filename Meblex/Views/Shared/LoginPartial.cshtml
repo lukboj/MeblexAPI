@@ -11,13 +11,12 @@
             <a asp-controller="Admin" asp-action="Index" class="nav-link">Panel Zarządzania</a>
         </li>
     }
-    <li class="nav-item">
-       @* <form method="post" asp-action="logout" asp-controller="account">
+    <li class="nav-link">
+        <form method="post" asp-action="logout" asp-controller="account">
             <button type="submit" class="nav-link btn btn-link py-0" style="width:auto">
                 Logout @User.Identity.Name
             </button>
-        </form>*@
-        <a asp-action="logout" asp-controller="account" class="nav-link">Logout @User.Identity.Name</a>
+        </form>
     </li>
 
 }

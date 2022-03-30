@@ -20,7 +20,7 @@ namespace MeblexData.Interfaces
         IEnumerable<Category> Categories { get; }
         Task<Product> AddProduct(Product product);
 
-        Task<Category> AddCategoryAsync(Category category);
+        Task<bool> AddCategoryAsync(Category category);
         Task<IEnumerable<Category>> GetAllCategoriesAsync();
         Task<Category> GetCategoryByIdAsync(int? id);
 
@@ -38,13 +38,13 @@ namespace MeblexData.Interfaces
 
         Task UpdateCategory(Category category);
 
-        Task DeleteProduct(int? id);
+        Task DeleteProduct(Product product);
         Task DeleteOrder(int? id);
         Task DeleteCategoryAsync(int? id);
 
         Task<Product> EditProduct(Product product);
 
-        Task<Order> IsShipped(int id);
+        Task<bool> IsShipped(int id);
 
         Task PrefferProduct(int id);
 
@@ -52,7 +52,7 @@ namespace MeblexData.Interfaces
 
         Task<bool> CategoryExist(int id);
 
-        Statistics GetStatistics();
+        Task<Statistics> GetStatistics();
 
 
 

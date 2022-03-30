@@ -1,4 +1,5 @@
 ﻿using Meblex.ModelsDTO;
+using Meblex.Services.Interfaces;
 using Meblex.ViewModels;
 using MeblexData.Interfaces;
 using Microsoft.AspNetCore.Mvc;
@@ -13,32 +14,19 @@ namespace Meblex.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly IProductRepository _productRepository;
-        public HomeController(IProductRepository productRepository)
+        private readonly IProductService productService;
+        public HomeController(IProductService _productService)
         {
-            _productRepository = productRepository;
+            productService = _productService;
+
         }
 
-        public ViewResult Index()
+        public async Task<ViewResult> Index()
         {
-            var homeviewmodel = new HomeViewModel
-            {
-                PrefferedProducts = _productRepository.PreferredProducts.Select(item => new ProductDTO
-                {
-                    ProductID = item.ProductID,
-                    Name = item.Name,
-                    Price = item.Price,
-                    IsPreferred = item.IsPreferred,
-                    Category = item.Category,
-                    Description = item.Description,
-                    ImageUrl = item.ImageUrl,
-
-                }
-            )
-            };
-        
-
-            return View(homeviewmodel);
+            var list = await productService.GetPrefferedProducts();
+            HomeViewModel hvm = new HomeViewModel(list);
+            
+            return View(hvm);
         }
 
         public IActionResult Privacy()
@@ -53,31 +41,15 @@ namespace Meblex.Controllers
                 return NotFound();
             }
 
-            var product = await _productRepository.GetProductByIdAsync(id);
+            var product = await productService.GetProductById(id);
 
-            ProductDetailsDTO productDetailsDTO = new ProductDetailsDTO()
-            {
-                ProductID = product.ProductID,
-                Name = product.Name,
-                Price = product.Price,
-                Lenght = product.Lenght,
-                Width = product.Width,
-                Height = product.Height,
-                Weight = product.Weight,
-                Description = product.Description,
-                Material = product.Material,
-                Color = product.Color,
-                IsPreferred = product.IsPreferred,
-                ImageUrl = product.ImageUrl,
-                Category = product.Category,
-            };
 
-            if (productDetailsDTO == null)
+            if (product == null)
             {
                 return NotFound();
             }
 
-            return View(productDetailsDTO);
+            return View(product);
         }
 
 

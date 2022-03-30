@@ -1,4 +1,5 @@
 ﻿using MeblexData.Models;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace Meblex.ModelsDTO

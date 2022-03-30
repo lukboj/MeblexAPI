@@ -17,6 +17,9 @@ using Microsoft.AspNetCore.Identity;
 using MeblexData.Data;
 using MeblexData.Models.ShoppingCart;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc.DataAnnotations;
+using Meblex.Services.Interfaces;
+using Meblex.Services;
 
 namespace Meblex
 {
@@ -41,6 +44,22 @@ namespace Meblex
             services.AddIdentity<IdentityUser, IdentityRole>()
                 .AddEntityFrameworkStores<AppDbContext>();
 
+            services.AddScoped<IAdminService, AdminService>();
+            services.AddScoped<IProductService, ProductService>();
+
+
+            //services.AddRazorPages()
+            //      .AddMvcOptions(options =>
+            //{
+            //  options.MaxModelValidationErrors = 50;
+            // options.ModelBindingMessageProvider.SetValueMustNotBeNullAccessor(
+            //_ => "The field is required.");
+            //});
+
+            //services.AddSingleton<IValidationAttributeAdapterProvider,
+            //    CustomValidationAttributeAdapterProvider>();
+
+            services.AddAutoMapper(typeof(Startup));
 
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddScoped(sp => ShoppingCart.GetCart(sp));

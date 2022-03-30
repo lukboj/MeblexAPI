@@ -53,7 +53,7 @@ namespace UnitTests
 
         public void ExecuteShouldReturnCorrectType()
         {
-            var options = new DbContextOptionsBuilder<AppDbContext>()
+            var options = new DbContextOptionsBuilder<AppDbContext>();
         }
     }
 }

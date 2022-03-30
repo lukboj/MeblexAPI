@@ -17,14 +17,23 @@ namespace MeblexData.Repositories
         {
             _appDbContext = appDbContext;
         }
+
         public IEnumerable<Product> Products => _appDbContext.Products.Include(b => b.Category);
+
+        public async Task<List<Category>> Categories()
+        {
+            return await _appDbContext.Categories.ToListAsync();
+        }
 
         public IEnumerable<Product> PreferredProducts => _appDbContext.Products.Where(p => p.IsPreferred).Include(c => c.Category);
 
-        public Product GetProductById(int productid) => _appDbContext.Products.Find(productid);
+
+        public async Task<Product> GetProductById(int productid) => await _appDbContext.Products.FindAsync(productid);
         public async Task<Product> GetProductByIdAsync(int? id) => await _appDbContext.Products.FindAsync(id);
 
-
-
+        public async Task<List<Product>> GetPrefferedProducts()
+        {
+            return await _appDbContext.Products.Where(a => a.IsPreferred == true).ToListAsync();
+        }
     }
 }
