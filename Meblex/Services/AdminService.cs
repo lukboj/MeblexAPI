@@ -207,14 +207,15 @@ namespace Meblex.Services
                 return false;
             }
 
-            var order = await adminRepository.GetCategoryByIdAsync(id);
+            var category = await adminRepository.GetCategoryByIdAsync(id);
 
-            if (order != null)
+            if (category != null)
             {
                 return false;
             }
             try
             {
+
                 await adminRepository.DeleteCategoryAsync(id);
                 return true;
             }

@@ -65,7 +65,7 @@ namespace MeblexData.Repositories
 
         public async Task DeleteCategoryAsync(int? id)
         {
-            var category = await _appDbContext.Categories.FindAsync(id);
+            var category = await _appDbContext.Categories.Include(a => a.Products).FirstOrDefaultAsync();
             _appDbContext.Categories.Remove(category);
             await _appDbContext.SaveChangesAsync();
         }
