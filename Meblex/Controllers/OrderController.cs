@@ -1,4 +1,7 @@
-﻿using MeblexData.Interfaces;
+﻿using AutoMapper;
+using Meblex.ModelsDTO;
+using Meblex.Services.Interfaces;
+using MeblexData.Interfaces;
 using MeblexData.Models.Order;
 using MeblexData.Models.ShoppingCart;
 using Microsoft.AspNetCore.Authorization;
@@ -11,13 +14,17 @@ namespace Meblex.Controllers
     [Authorize]
     public class OrderController : Controller
     {
-        private readonly IOrderRepository _orderRepository;
         private readonly ShoppingCart _shoppingCart;
+        private readonly IOrderService orderService;
+        private readonly IMapper mapper;
 
-        public OrderController(IOrderRepository orderRepository, ShoppingCart shoppingCart)
+
+        public OrderController(ShoppingCart shoppingCart, IOrderService _orderService, IMapper _mapper )
         {
-            _orderRepository = orderRepository;
             _shoppingCart = shoppingCart;
+            orderService = _orderService;
+            mapper = _mapper;
+            
         }
         [Authorize]
         public IActionResult CheckOut()
@@ -28,7 +35,7 @@ namespace Meblex.Controllers
         [HttpPost]
         [Authorize]
 
-        public IActionResult CheckOut(Order order)
+        public async Task<IActionResult> CheckOut(Order order)
         {
             var items = _shoppingCart.GetShoppingCartItems();
             _shoppingCart.ShoppingCartItems = items;
@@ -39,7 +46,10 @@ namespace Meblex.Controllers
 
             if (ModelState.IsValid)
             {
-                _orderRepository.createOrder(order);
+
+                var ordertocreate = mapper.Map<OrderDetailsDTO>(order);
+
+                await orderService.createOrder(ordertocreate);
                 _shoppingCart.ClearCart();
                 return RedirectToAction("CheckOutComplete");
             }
@@ -52,14 +62,14 @@ namespace Meblex.Controllers
             return View();
         }
             
-        public IActionResult YourOrders()
+        public async Task<IActionResult> YourOrders()
         {
-            return View(_orderRepository.GetUserOrders());
+            return View(await orderService.GetUserOrders());
         }
 
         public async Task<IActionResult> Details(int id)
         {
-            return View(await _orderRepository.GetUserOrderByIdAsync(id));
+            return View(await orderService.GetUserOrderByIdAsync(id));
         }
 
 

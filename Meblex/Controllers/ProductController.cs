@@ -12,17 +12,15 @@ namespace Meblex.Controllers
 {
     public class ProductController : Controller
     {
-        private readonly IProductRepository _productRepository;
         private readonly IProductService productService;
 
-        public ProductController(IProductRepository productRepository, IProductService _productService)
+        public ProductController(IProductService _productService)
         {
-            _productRepository = productRepository;
             productService = _productService;
         }
 
 
-        public ViewResult List(string? category)
+        public async Task<ViewResult> List(string? category)
         {
             string _category = category;
             IEnumerable<ProductDTO> products;
@@ -31,19 +29,9 @@ namespace Meblex.Controllers
 
             if (string.IsNullOrEmpty(category))
             {
-              
-                 products = _productRepository.Products
-                    .OrderBy(p => p.ProductID)
-                    .Select(item => new ProductDTO
-                    {
-                        ProductID = item.ProductID,
-                        Price = item.Price,
-                        Category = item.Category,
-                        Description = item.Description,
-                        ImageUrl= item.ImageUrl,
-                        IsPreferred = item.IsPreferred,
-                        Name = item.Name,
-                    } );
+                products = await productService.GetProducts();
+
+               
                 currentcategory = "Wszystkie produkty";
 
                 var plvm = new ProductListViewModel
@@ -54,20 +42,8 @@ namespace Meblex.Controllers
                 };
                 return View(plvm);
             }
-                
-            products = _productRepository.Products.Where(p => p.Category.Name.
-            Equals(category)).
-            OrderBy(p => p.Name).
-            Select(item => new ProductDTO
-            {
-                ProductID = item.ProductID,
-                Price = item.Price,
-                Category = item.Category,
-                Description = item.Description,
-                ImageUrl = item.ImageUrl,
-                IsPreferred = item.IsPreferred,
-                Name = item.Name,
-            }); ;
+
+            products = await productService.GetProductsByCategoryId(category);
 
             var pvm = new ProductListViewModel
             {
@@ -80,9 +56,9 @@ namespace Meblex.Controllers
 
 
         }
-        public IActionResult Index()
+        public async  Task<IActionResult> Index()
         {
-            return View();
+            return View( );
         }
         public async Task<IActionResult> Details(int? id)
         {
@@ -93,22 +69,6 @@ namespace Meblex.Controllers
 
             var product = await productService.GetProductById(id); 
 
-            //ProductDetailsDTO productDetailsDTO = new ProductDetailsDTO()
-            //{
-            //    ProductID = product.ProductID,
-            //    Name = product.Name,
-            //    Price = product.Price,
-            //    Lenght = product.Lenght,
-            //    Width = product.Width,
-            //    Height = product.Height,
-            //    Weight = product.Weight,
-            //    Description = product.Description,
-            //    Material = product.Material,
-            //    Color = product.Color,
-            //    IsPreferred = product.IsPreferred,
-            //    ImageUrl = product.ImageUrl,
-            //    Category = product.Category,
-            //}/*;*/
             if (product == null)
             {
                 return NotFound();

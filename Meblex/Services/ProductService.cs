@@ -47,11 +47,29 @@ namespace Meblex.Services
             return prodctdto;
         }
 
-        public Task<List<ProductDTO>> GetProducts()
+        public MeblexData.Models.Product GetProductByIdNotAsync(int? id)
         {
-            throw new System.NotImplementedException();
+            if (id != null)
+            {
+                return productRepository.Gp(id);
+            }
+            return null;
         }
 
+        public async Task<IEnumerable<ProductDTO>> GetProducts()
+        {
+            var products = await productRepository.GetProducts();
+            var productsdto = mapper.Map<List<ProductDTO>>(products);
+            return productsdto;
+
+        }
+
+        public async Task<IEnumerable<ProductDTO>> GetProductsByCategoryId(string categoryname)
+        {
+            var products = await productRepository.GetProductsByCategory(categoryname);
+            var productsdbo = mapper.Map<IEnumerable<ProductDTO>>(products);
+            return productsdbo;
+        }
 
     }
 }

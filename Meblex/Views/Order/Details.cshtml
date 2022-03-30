@@ -1,4 +1,4 @@
-﻿@model MeblexData.Models.Order.Order
+﻿@model Meblex.ModelsDTO.OrderDetailsDTO
 
 @{
     ViewData["Title"] = "Details";
@@ -93,7 +93,7 @@
                 <td>@Html.DisplayFor(model => item.Product.Name)</td>
                 <td>@Html.DisplayFor(model => item.Amount)</td>
                 <td>@Html.DisplayFor(model => item.Price)</td>
-                <td>@Html.DisplayFor(model => item.Product.Color)</td>
+                <td>@Html.DisplayFor(model => item.Product.Category)</td>
 
             </tr>
         }

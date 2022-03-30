@@ -46,6 +46,7 @@ namespace Meblex
 
             services.AddScoped<IAdminService, AdminService>();
             services.AddScoped<IProductService, ProductService>();
+            services.AddScoped<IOrderService, OrderService>();
 
 
             //services.AddRazorPages()

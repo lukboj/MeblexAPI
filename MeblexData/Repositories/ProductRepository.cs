@@ -35,5 +35,16 @@ namespace MeblexData.Repositories
         {
             return await _appDbContext.Products.Where(a => a.IsPreferred == true).ToListAsync();
         }
+
+        public async Task<IEnumerable<Product>> GetProducts() => await _appDbContext.Products.OrderBy(a => a.ProductID).ToListAsync();
+
+
+        public async Task<IEnumerable<Product>> GetProductsByCategory(string name) => await _appDbContext.Products.Include(a => a.Category)
+            .Where(a => a.Category.Name == name).OrderBy(a => a.Name).ToListAsync();
+
+        public Product Gp(int? id)
+        {
+            return _appDbContext.Products.Find(id);
+        }
     }
 }

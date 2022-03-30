@@ -129,7 +129,7 @@ namespace Meblex.Services
                 return false;
             }
 
-            Order order = await adminRepository.GetOrderByIdAsync(id);
+            var order = await adminRepository.GetOrderByIdAsync(id);
 
             if (order != null)
             {

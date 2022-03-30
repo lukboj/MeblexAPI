@@ -1,20 +1,26 @@
-﻿using Meblex.ViewModels;
+﻿using AutoMapper;
+using Meblex.Services.Interfaces;
+using Meblex.ViewModels;
 using MeblexData.Interfaces;
+using MeblexData.Models;
 using MeblexData.Models.ShoppingCart;
 using Microsoft.AspNetCore.Mvc;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace Meblex.Controllers
 {
     public class ShoppingCartController : Controller
     {
-        private readonly IProductRepository _productRepository;
         private readonly ShoppingCart _shoppingCart;
+        private readonly IProductService productService;
+        private readonly IMapper mapper;
 
-        public ShoppingCartController(IProductRepository productRepository, ShoppingCart shoppingCart)
+        public ShoppingCartController( ShoppingCart shoppingCart, IProductService _productService, IMapper _mapper )
         {
-            _productRepository = productRepository;
             _shoppingCart = shoppingCart;
+            productService = _productService;
+            mapper = _mapper;
         }
 
         public ViewResult Index()
@@ -30,22 +36,27 @@ namespace Meblex.Controllers
             return View(sCVM);
         }
 
-        public RedirectToActionResult AddToShoppingCart(int productid)
+        public async Task<RedirectToActionResult> AddToShoppingCart(int productid)
 
         {
-            var selectedproduct = _productRepository.Products.FirstOrDefault(p => p.ProductID == productid);
+
+            var selectedproduct =  productService.GetProductByIdNotAsync(productid);
+
             if (selectedproduct != null)
             {
                 _shoppingCart.AddToCart(selectedproduct, 1);
             }
             return RedirectToAction("index");
         }
-        public RedirectToActionResult RemoveFromShoppingCart(int productid)
+        public async Task<RedirectToActionResult> RemoveFromShoppingCart(int productid)
         {
-            var selecetedproduct = _productRepository.Products.FirstOrDefault(p => p.ProductID == productid);
-            if (selecetedproduct != null)
+            var selectedproduct =  productService.GetProductByIdNotAsync(productid);
+
+
+            if (selectedproduct != null)
+
             {
-                _shoppingCart.RemoveFromCart(selecetedproduct);
+                _shoppingCart.RemoveFromCart(selectedproduct);
             }
             return RedirectToAction("index");
         }

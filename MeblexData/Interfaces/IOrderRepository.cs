@@ -9,9 +9,9 @@ namespace MeblexData.Interfaces
 {
     public interface IOrderRepository
     {
-        void createOrder(Order order);
+        Task createOrder(Order order);
 
-        List<Order> GetUserOrders();
+        Task<List<Order>> GetUserOrders();
 
         Task<Order> GetUserOrderByIdAsync(int id);
     }

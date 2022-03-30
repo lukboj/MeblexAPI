@@ -26,13 +26,12 @@ namespace MeblexData.Repositories
             _shoppingCart = shoppingCart;
             _httpContextAccessor = httpContextAccessor;
         }
-        public void createOrder(Order order)
+        public async Task createOrder(Order order)
         {
 
 
             order.OrderPlaced = DateTime.Now;
             order.UserId = _httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value;
-            order.IsShipped = false;
             order.OrderTotal = _shoppingCart.GetShoppingCartTotal();
 
             _appDbContext.Add(order);
@@ -50,9 +49,9 @@ namespace MeblexData.Repositories
                     OrderId = order.OrderId,
                     Price = item.Product.Price
                 };
-                _appDbContext.OrdersDetails.Add(orderdetail);
+                 await _appDbContext.OrdersDetails.AddAsync(orderdetail);
             }
-            _appDbContext.SaveChanges();
+            await _appDbContext.SaveChangesAsync();
 
         }
 
@@ -67,7 +66,7 @@ namespace MeblexData.Repositories
                 .SingleOrDefaultAsync();
         }
 
-        public List<Order> GetUserOrders()
+        public async Task<List<Order>> GetUserOrders()
         {
             string userid = _httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value;
             return _appDbContext.Orders

@@ -13,10 +13,16 @@ namespace MeblexData.Interfaces
         IEnumerable<Product> PreferredProducts { get; }
         Task<Product> GetProductById(int id);
 
+        Task<IEnumerable<Product>> GetProducts();
+
         Task<List<Category>> Categories();
 
         Task<Product> GetProductByIdAsync(int? productid);
 
+        Task<IEnumerable<Product>> GetProductsByCategory(string name);
+
         Task<List<Product>> GetPrefferedProducts();
-    }
+
+        Product Gp(int? id);
+    } 
 }

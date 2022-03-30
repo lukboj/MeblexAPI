@@ -107,6 +107,11 @@ namespace MeblexData.Mocks
             throw new NotImplementedException();
         }
 
+        public Task<IEnumerable<Product>> GetPrefferedProducts()
+        {
+            throw new NotImplementedException();
+        }
+
         public Product GetProductById(int productid)
         {
             throw new NotImplementedException();
@@ -117,7 +122,32 @@ namespace MeblexData.Mocks
             throw new NotImplementedException();
         }
 
+        public Task<List<Product>> GetProducts()
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<IEnumerable<Product>> GetProductsByCategory(string name)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Product Gp(int? id)
+        {
+            throw new NotImplementedException();
+        }
+
+        Task<List<Product>> IProductRepository.GetPrefferedProducts()
+        {
+            throw new NotImplementedException();
+        }
+
         Task<Product> IProductRepository.GetProductById(int id)
+        {
+            throw new NotImplementedException();
+        }
+
+        Task<IEnumerable<Product>> IProductRepository.GetProducts()
         {
             throw new NotImplementedException();
         }

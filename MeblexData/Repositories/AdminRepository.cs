@@ -59,7 +59,6 @@ namespace MeblexData.Repositories
 
         public async Task DeleteProduct(Product product)
         {
-            //var order = await _appDbContext.Products.FindAsync(id);
             _appDbContext.Products.Remove(product);
             await _appDbContext.SaveChangesAsync();
         }
@@ -91,7 +90,7 @@ namespace MeblexData.Repositories
 
         public async Task<IEnumerable<Product>> GetAllProductsAsync()
         {
-            return await _appDbContext.Products.ToListAsync();
+            return await _appDbContext.Products.Include(a => a.Category).ToListAsync();
         }
 
         public async Task<Category> GetCategoryByIdAsync(int? id)
