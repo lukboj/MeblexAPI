@@ -24,6 +24,9 @@
                        <li class="nav-item">
                             <a class="nav-link" asp-area="" asp-controller="Order" asp-action="YourOrders">Twoje Zamówienia</a>
                         </li>
+                        <li class="nav-item">
+                            <a class="nav-link" asp-area="" asp-controller="Opinion" asp-action="Index">Opinie</a>
+                        </li>
                     </ul>
                     <ul class="nav navbar-nav">
                         @await Component.InvokeAsync("ShoppingCartSummary")

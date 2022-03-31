@@ -1,0 +1,73 @@
+﻿@model IEnumerable<Meblex.ModelsDTO.OpinionDTO>
+
+@inject SignInManager<IdentityUser> SignInManager
+
+@{
+    ViewData["Title"] = "Opinie o sklepie";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<br />
+<table class="table">
+    <tbody>
+        @foreach (var item in Model)
+        {
+
+            @if (User.IsInRole("Administrator"))
+            {
+                <tr>
+
+                    <h1 align="center">Opinia Pana/Pani @item.FirstName @item.LastName</h1>
+                    <hr />
+                    <div>
+
+                        <dl class="row">
+
+                            <dd align="center" class="col-sm-10">
+                                @item.description
+                            </dd>
+
+                        </dl>
+                        <div align="center">
+                            @Html.ActionLink("Edytuj", "Edit", new { id = item.opinionid }, new { @class = "btn btn-primary" })
+                            @Html.ActionLink("Usuń", "Delete", new { id = item.opinionid }, new { @class = "btn btn-primary" })
+                            @Html.ActionLink("Detale", "Details", new { id = item.opinionid }, new { @class = "btn btn-primary" })
+
+
+                        </div>
+                    </div>
+
+
+                </tr>
+            }
+            else
+            {
+                <tr>
+
+                    <h1 align="center">Opinia Pana/Pani @item.FirstName @item.LastName</h1>
+                    <hr />
+                    <div>
+
+                        <dl class="row">
+
+                            <dd align="center" class="col-sm-10">
+                                @item.description
+                            </dd>
+
+                        </dl>
+
+                    </div>
+
+
+                </tr>
+            }
+
+        }
+    </tbody>
+</table>
+<hr />
+
+<div>
+    <a asp-action="Create" class="btn btn-secondary btn-lg btn-block">Dodaj Swoją Opinie</a>
+</div>

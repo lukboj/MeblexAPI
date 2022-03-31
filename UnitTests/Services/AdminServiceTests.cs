@@ -117,7 +117,7 @@ namespace UnitTests.Services
 
             adminmock.Setup(x => x.GetAllCategoriesAsync()).ReturnsAsync(categories);
 
-            var test = controller.Categories();
+            var test = await controller.Categories();
 
             Assert.IsNotNull(test);
 

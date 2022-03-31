@@ -20,6 +20,7 @@ namespace Meblex.Profiles
             CreateMap<Category, CategoryDTO>().ReverseMap();
             CreateMap<Statistics, StatisticsDTO>().ReverseMap();
             CreateMap<ShoppingCartItemDTO, ShoppingCartItem>().ReverseMap();
+            CreateMap<Opinion, OpinionDTO>().ReverseMap();
 
 
 

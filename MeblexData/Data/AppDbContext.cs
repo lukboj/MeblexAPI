@@ -22,6 +22,9 @@ namespace MeblexData.Data
         public DbSet<Category> Categories { get; set; }
         public DbSet<ShoppingCartItem> ShoppingCartItems { get; set; }
         public DbSet<Order> Orders { get; set; }
+
+        public DbSet<Opinion> Opinions { get; set; }
+
         public DbSet<OrderDetail> OrdersDetails { get; set; }
         public DbSet<ApplicationUser> AplicationUsers { get; set; }
 

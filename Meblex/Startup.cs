@@ -20,6 +20,8 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc.DataAnnotations;
 using Meblex.Services.Interfaces;
 using Meblex.Services;
+using MediatR;
+using System.Reflection;
 
 namespace Meblex
 {
@@ -47,18 +49,8 @@ namespace Meblex
             services.AddScoped<IAdminService, AdminService>();
             services.AddScoped<IProductService, ProductService>();
             services.AddScoped<IOrderService, OrderService>();
-
-
-            //services.AddRazorPages()
-            //      .AddMvcOptions(options =>
-            //{
-            //  options.MaxModelValidationErrors = 50;
-            // options.ModelBindingMessageProvider.SetValueMustNotBeNullAccessor(
-            //_ => "The field is required.");
-            //});
-
-            //services.AddSingleton<IValidationAttributeAdapterProvider,
-            //    CustomValidationAttributeAdapterProvider>();
+            services.AddScoped<IOpinionService, OpinionService>();
+            services.AddMediatR(Assembly.GetExecutingAssembly());
 
             services.AddAutoMapper(typeof(Startup));
 
@@ -71,6 +63,7 @@ namespace Meblex
             services.AddTransient<ICategoryRepository, CategoryRepository>();
             services.AddTransient<IProductRepository, ProductRepository>();
             services.AddTransient<IOrderRepository, OrderRepository>();
+            services.AddTransient<IOpinionRepository, OpinionRepository>();
 
 
         }

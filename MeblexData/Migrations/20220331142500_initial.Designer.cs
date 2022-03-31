@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace MeblexData.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20220328080052_productupdate")]
-    partial class productupdate
+    [Migration("20220331142500_initial")]
+    partial class initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -41,6 +41,27 @@ namespace MeblexData.Migrations
                     b.HasKey("CategoryId");
 
                     b.ToTable("Categories");
+                });
+
+            modelBuilder.Entity("MeblexData.Models.Opinion", b =>
+                {
+                    b.Property<int>("opinionid")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("FirstName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("LastName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("description")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("opinionid");
+
+                    b.ToTable("Opinions");
                 });
 
             modelBuilder.Entity("MeblexData.Models.Order.Order", b =>
@@ -151,6 +172,7 @@ namespace MeblexData.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("ImageUrl")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("IsPreferred")

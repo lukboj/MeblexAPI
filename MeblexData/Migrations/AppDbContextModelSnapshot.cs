@@ -41,6 +41,27 @@ namespace MeblexData.Migrations
                     b.ToTable("Categories");
                 });
 
+            modelBuilder.Entity("MeblexData.Models.Opinion", b =>
+                {
+                    b.Property<int>("opinionid")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("FirstName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("LastName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("description")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("opinionid");
+
+                    b.ToTable("Opinions");
+                });
+
             modelBuilder.Entity("MeblexData.Models.Order.Order", b =>
                 {
                     b.Property<int>("OrderId")
@@ -149,6 +170,7 @@ namespace MeblexData.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("ImageUrl")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("IsPreferred")
